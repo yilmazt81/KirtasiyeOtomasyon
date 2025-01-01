@@ -41,5 +41,19 @@ namespace SP.DBLayer
 
         }
 
+        public static Product SaveProduct(Product product)
+        {
+            SPEntities entities = new SPEntities();
+            entities.Product.Add(product);
+            entities.SaveChanges();
+
+            return product;
+
+        }
+
+        public static void UpdateProduct(Product product)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

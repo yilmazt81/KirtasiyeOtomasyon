@@ -67,6 +67,7 @@ namespace SP.Main
                 product.Description = textBoxDescription.Text;
                 product.ProductName = textBoxName.Text;
                 product.ProductCategoryId = (int)comboBoxCategory.SelectedValue;
+                product.SalePrice=decimal.Parse(textBoxPrice.Text);
                 return product;
             }
             set
@@ -80,7 +81,7 @@ namespace SP.Main
                 textBoxDescription.Text = product.Description;
                 textBoxName.Text = product.ProductName;
                 comboBoxCategory.SelectedValue = product.ProductCategoryId;
-
+                textBoxPrice.Text = (product.SalePrice == null ? decimal.Zero.ToString() : product.SalePrice.Value.ToString());
             }
         }
 
@@ -91,8 +92,30 @@ namespace SP.Main
 
         private void buttonOk_Click(object sender, EventArgs e)
         {
+            if (string.IsNullOrEmpty(textBoxName.Text))
+            {
+                FormMessageOk formMessageOk = new FormMessageOk("Ürün Adı Girmediniz.");
+                formMessageOk.ShowDialog();
+                return;
+            }
+            try
+            {
+                var product = EditProduct;
+                if (product.Id==0)
+                {
+                    DBHelper.SaveProduct(product);
+                }
+                else
+                {
+                    DBHelper.UpdateProduct(product);
+                }
 
-            DialogResult= DialogResult.OK;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Hata");
+            }
+            DialogResult = DialogResult.OK;
         }
     }
 }

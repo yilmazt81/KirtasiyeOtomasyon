@@ -28,7 +28,10 @@ namespace SP.Main
             FormProductEdit formProductEdit = new FormProductEdit();
             formProductEdit.ShowDialog();
         }
+        private void AddProduct(Product product)
+        {
 
+        }
         private void textBoxProductBarcode_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode==Keys.Enter && !string.IsNullOrEmpty(textBoxProductBarcode.Text))
@@ -37,12 +40,16 @@ namespace SP.Main
 
                 if (product == null)
                 {
-                    FormProductEdit formProductEdit = new FormProductEdit();
+                    FormProductEdit formProductEdit = new FormProductEdit(textBoxProductBarcode.Text);
                     if (formProductEdit.ShowDialog() == DialogResult.OK)
                     {
-
+                        AddProduct(formProductEdit.EditProduct);
                     }
+                }
+                else
+                {
 
+                    AddProduct(product);
                 }
             }
         }
